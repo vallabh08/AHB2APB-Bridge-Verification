@@ -15,25 +15,8 @@ The core challenge this design solves: AHB is pipelined (address phase and data 
 ## Architecture
 
 ```
-AHB Master
-    │
-    ▼
-┌─────────────────────┐
-│  AHB Slave Interface │  ← pipeline-delay registers (Haddr1, Hwdata1)
-│     (AHBSlave)       │  ← address decode → tempselx
-│                      │  ← valid signal generation
-└──────────┬──────────┘
-           │ valid, Haddr1, Hwdata1, tempselx
-           ▼
-┌─────────────────────┐
-│  APB FSM Controller  │  ← 8-state Moore FSM
-│    (APBControl)      │  ← drives PSELx, PENABLE, PWRITE, PADDR, PWDATA
-│                      │  ← controls HREADYout to stall AHB master
-└──────────┬──────────┘
-           │
-           ▼
-      APB Peripheral
-```
+<img width="993" height="480" alt="Screenshot 2026-06-17 143926" src="https://github.com/user-attachments/assets/39864d5b-8ff9-4157-8d19-cf7918f3e89b" />
+
 
 ---
 
@@ -100,26 +83,6 @@ An **8-state Moore FSM** that handles the protocol conversion:
 
 ---
 
-## File Structure
-
-```
-ahb2apb-bridge/
-├── README.md
-├── rtl/
-│   ├── Bridge_Top.v              # Top-level structural wrapper
-│   ├── AHB_slave_interface.v     # AHB slave + pipeline registers
-│   └── APB_FSM_Controller.v     # 8-state Moore FSM
-├── tb/
-│   └── tb_ahb2apb.v              # Testbench (Single, INCR4, WRAP4)
-├── sim/
-│   └── Makefile                  # iverilog compile + simulate
-├── docs/
-│   └── AHB2APB_report.pdf        # Maven Silicon internship report
-└── .gitignore
-```
-
----
-
 ## Simulation
 
 Verified using **ModelSim**. The testbench covers:
@@ -137,19 +100,6 @@ To simulate with Icarus Verilog:
 ```bash
 cd sim
 make        # runs iverilog + vvp
-```
-
-Example `Makefile`:
-```makefile
-SRC = ../rtl/Bridge_Top.v ../rtl/AHB_slave_interface.v ../rtl/APB_FSM_Controller.v
-TB  = ../tb/tb_ahb2apb.v
-
-sim:
-	iverilog -o bridge_sim $(SRC) $(TB)
-	vvp bridge_sim
-
-clean:
-	rm -f bridge_sim *.vcd
 ```
 
 ---
