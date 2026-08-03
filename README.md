@@ -15,8 +15,9 @@ The core challenge this design solves: AHB is pipelined (address phase and data 
 ## Architecture
 
 ```
-<img width="993" height="480" alt="Screenshot 2026-06-17 143926" src="https://github.com/user-attachments/assets/39864d5b-8ff9-4157-8d19-cf7918f3e89b" />
+<img width="993" height="480" alt="Screenshot 2026-06-17 143926" src="https://github.com/user-attachments/assets/68d1838b-c7fa-4735-8419-b8c248593afe" />
 
+```
 
 ---
 
@@ -80,6 +81,8 @@ An **8-state Moore FSM** that handles the protocol conversion:
 | `PSELx` | Out | 3 | Peripheral select (one-hot) |
 | `PENABLE` | Out | 1 | APB enable (ENABLE phase) |
 | `PRDATA` | In | 32 | APB read data from peripheral |
+
+---
 
 ---
 
