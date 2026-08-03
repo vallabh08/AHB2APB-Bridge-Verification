@@ -12,12 +12,6 @@ The core challenge this design solves: AHB is pipelined (address phase and data 
 
 ---
 
-## Architecture
-
-```
-<img width="993" height="480" alt="Screenshot 2026-06-17 143926" src="https://github.com/user-attachments/assets/68d1838b-c7fa-4735-8419-b8c248593afe" />
-
-```
 
 ---
 
