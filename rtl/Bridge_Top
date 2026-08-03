@@ -1,0 +1,57 @@
+module Bridge_Top(
+    input  HCLK, HRESETn,
+    input  HWRITE, HREADYin,
+    input  [31:0] HADDR, HWDATA,
+    input  [1:0]  HTRANS,
+    output        HREADYout,
+    output [31:0] HRDATA,
+    output [1:0]  HRESP,
+    input  [31:0] PRDATA,
+    output        PWRITE, PENABLE,
+    output [2:0]  PSELx,
+    output [31:0] PADDR, PWDATA
+);
+
+    wire [31:0] Haddr1, Hwdata1;
+    wire        valid, Hwritereg;
+    wire [2:0]  tempselx;
+
+    AHB_slave_interface AHBSlave (
+        .Hclk      (HCLK),
+        .Hresetn   (HRESETn),
+        .Hwrite    (HWRITE),
+        .Hreadyin  (HREADYin), // RESTORED: Proper AHB protocol
+        .Haddr     (HADDR),
+        .Hwdata    (HWDATA),
+        .Prdata    (PRDATA),
+        .Htrans    (HTRANS),
+        .valid     (valid),
+        .Hwritereg (Hwritereg),
+        .Haddr1    (Haddr1),
+        .Hwdata1   (Hwdata1),
+        .Hrdata    (HRDATA),
+        .tempselx  (tempselx),
+        .Hresp     (HRESP)
+    );
+
+    APB_FSM_Controller APBControl (
+        .Hclk      (HCLK),
+        .Hresetn   (HRESETn),
+        .valid     (valid),
+        .Hwrite    (HWRITE),
+        .Hwritereg (Hwritereg),
+        .Haddr     (HADDR),
+        .Haddr1    (Haddr1),
+        .Hwdata    (HWDATA),
+        .Hwdata1   (Hwdata1),
+        .Prdata    (PRDATA),
+        .Htrans    (HTRANS),
+        .tempselx  (tempselx),
+        .Pwrite    (PWRITE),
+        .Penable   (PENABLE),
+        .Hreadyout (HREADYout),
+        .Pselx     (PSELx),
+        .Paddr     (PADDR),
+        .Pwdata    (PWDATA)
+    );
+endmodule
